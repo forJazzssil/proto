@@ -17,6 +17,6 @@ object HelloServer extends GRPCServer{
 	}
 
 	def main(args: Array[String]): Unit = {
-
+		println("a")
 	}
 }
