@@ -1,5 +1,6 @@
 import io.grpc.*;
 import io.grpc.examples.helloworld.GreeterGrpc;
+import io.grpc.examples.helloworld.Person;
 import io.grpc.examples.helloworld.ProtoRequest;
 import io.grpc.examples.helloworld.ProtoResponse;
 
@@ -34,9 +35,9 @@ public class HelloWorldClient {
 	}
 
 	/** Say hello to server. */
-	public void greet(String name) {
+	public void greet(String name, Person person) {
 		logger.info("Will try to greet " + name + " ...");
-		ProtoRequest request = ProtoRequest.newBuilder().setName(name).build();
+		ProtoRequest request = ProtoRequest.newBuilder().setName(name).setPerson(person).build();
 		ProtoResponse response;
 		try {
 			response = blockingStub.receive(request);
@@ -52,14 +53,16 @@ public class HelloWorldClient {
 	 * greeting.
 	 */
 	public static void main(String[] args) throws Exception {
-		HelloWorldClient client = new HelloWorldClient("localhost", 50051);
+		HelloWorldClient client = new HelloWorldClient("localhost", 50052);
 		try {
 			/* Access a service running on the local machine on port 50051 */
 			String user = "lrx";
+			Person p = Person.newBuilder().setName("sfx").build();
+
 			if (args.length > 0) {
 				user = args[0]; /* Use the arg as the name to greet if provided */
 			}
-			client.greet(user);
+			client.greet(user, p);
 		} finally {
 			client.shutdown();
 		}
